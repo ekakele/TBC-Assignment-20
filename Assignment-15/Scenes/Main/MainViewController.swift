@@ -1,14 +1,15 @@
 //
-//  HomeViewController.swift
-//  Assignment-18: Assignment-15 + API
+//  MainViewController.swift
+//  Assignment-20: Assignment-18 + MVVM
 //
 //  Created by Eka Kelenjeridze on 03.11.23.
 //  Modified by Eka Kelenjeridze on 11.11.23.
+//  Modified by Eka Kelenjeridze on 20.11.23.
 //
 
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class MainViewController: UIViewController {
     
     // MARK: - Properties
     private let logoImageView: UIImageView = {
@@ -58,7 +59,8 @@ final class HomeViewController: UIViewController {
     }()
     
     private let searchController = UISearchController()
-    private var searchedMovies = [Movie]()
+    private var movies = [Movie]()
+    private var viewModel = MainViewModel()
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -71,7 +73,9 @@ final class HomeViewController: UIViewController {
         setupLabelConstraints()
         setupCollectionView()
         setupCollectionViewConstraints()
-        fetchMovies(keyword: "Christmas")
+        
+        setupViewModelDelegate()
+        viewModel.viewDidLoad()
     }
     
     // MARK: - Private Methods
@@ -137,21 +141,16 @@ final class HomeViewController: UIViewController {
         ])
     }
     
-    private func fetchMovies(keyword: String) {
-        APIService.shared.fetchMovies(searchKeyword: keyword) { [weak self] searchedMovies in
-            guard let self = self, let searchedMovies = searchedMovies else { return }
-            self.searchedMovies = searchedMovies
-            DispatchQueue.main.async {
-                self.moviesCollectionView.reloadData()
-            }
-        }
+    private func setupViewModelDelegate() {
+        viewModel.delegate = self
     }
+    
 }
 
 // MARK: - CollectionView DataSource
-extension HomeViewController: UICollectionViewDataSource {
+extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchedMovies.count
+        return movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -159,21 +158,21 @@ extension HomeViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.configure(with: searchedMovies[indexPath.row])
+        cell.configure(with: movies[indexPath.row])
         return cell
     }
 }
 // MARK: - CollectionView Delegate
-extension HomeViewController: UICollectionViewDelegate {
+extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movieDetailsPage = MovieDetailViewController()
-        movieDetailsPage.configure(with: searchedMovies[indexPath.row])
-        navigationController?.pushViewController(movieDetailsPage, animated: true)
+        //        let movieDetailsPage = MovieDetailViewController()
+        //        movieDetailsPage.configure(with: movies[indexPath.row])
+        //        navigationController?.pushViewController(movieDetailsPage, animated: true)
     }
 }
 
 // MARK: - CollectionView DelegateFlowLayout
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
+extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = Int((view.frame.width / 2) - 24)
@@ -195,9 +194,23 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - SearchController Methods
-extension HomeViewController: UISearchResultsUpdating {
+extension MainViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
-        fetchMovies(keyword: text)
+        //        fetchMovies(keyword: text)
+    }
+}
+
+// MARK: - HomeViewModelDelegate
+extension MainViewController: HomeViewModelDelegate {
+    func moviesFetched(_ movies: [Movie]) {
+        self.movies = movies
+        DispatchQueue.main.async {
+            self.moviesCollectionView.reloadData()
+        }
+    }
+    
+    func showError(_ error: Error) {
+        print(error.localizedDescription)
     }
 }

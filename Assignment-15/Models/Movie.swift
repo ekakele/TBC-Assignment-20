@@ -1,14 +1,19 @@
 //
-//  MovieData.swift
-//  Assignment-18: Assignment-15 + API
+//  MoviesResponse.swift
+//  Assignment-20: Assignment-18 + MVVM
 //
 //  Created by Eka Kelenjeridze on 11.11.23.
+//  Modified by Eka Kelenjeridze on 20.11.23.
 //
 
 import Foundation
 
-struct SearchedMovies: Decodable {
-    let Search: [Movie]
+struct MoviesResponse: Decodable {
+    let result: [Movie]
+    
+    private enum CodingKeys: String, CodingKey {
+        case result = "Search"
+    }
 }
 
 struct Movie: Decodable {
