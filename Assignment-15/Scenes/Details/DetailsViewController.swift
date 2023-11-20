@@ -1,13 +1,15 @@
 //
-//  MovieDetailViewController.swift
-//  Assignment-15
+//  DetailsViewController.swift
+//  Assignment-20: Assignment-18 + MVVM
 //
 //  Created by Eka Kelenjeridze on 03.11.23.
+//  Modified by Eka Kelenjeridze on 20.11.23.
 //
+
 
 import UIKit
 
-final class MovieDetailViewController: UIViewController {
+final class DetailsViewController: UIViewController {
     // MARK: - UI Components
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -33,14 +35,14 @@ final class MovieDetailViewController: UIViewController {
         return label
     }()
     
-    private let ratingLabel: UILabel = {
+    private let IDLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     
-    private let ratingSourceLabel: UILabel = {
+    private let IMDBLabel: UILabel = {
         let label = UILabel()
         label.text = "IMDB ID"
         label.textColor = .white
@@ -67,7 +69,7 @@ final class MovieDetailViewController: UIViewController {
         return button
     }()
     
-    private var movie: Movie?
+    private var viewModel = DetailsViewModel()
     
     // MARK: - ViewLifecycle
     override func viewDidLoad() {
@@ -116,8 +118,8 @@ final class MovieDetailViewController: UIViewController {
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
-        stackView.addArrangedSubview(ratingLabel)
-        stackView.addArrangedSubview(ratingSourceLabel)
+        stackView.addArrangedSubview(IDLabel)
+        stackView.addArrangedSubview(IMDBLabel)
         
         mainStackView.addArrangedSubview(stackView)
     }
@@ -173,28 +175,26 @@ final class MovieDetailViewController: UIViewController {
     }
     
     private func setupMovieWithInformation() {
-        guard let movie else { return }
-        navigationItem.title = movie.title
-        ratingLabel.text = movie.imdbID
-        if let url = URL(string: movie.poster!) {
-            loadImage(from: url)
-        }
+        navigationItem.title = viewModel.titleLabel
+        IDLabel.text = viewModel.ratingLabel
+        loadMovieImage()
     }
     
-    private func loadImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self, let data = data, error == nil else {
-                return
-            }
+    private func loadMovieImage() {
+        guard let url = viewModel.posterURL else { return }
+        
+        viewModel.loadImageData(from: url) { [weak self] data, error in
             DispatchQueue.main.async {
-                self.movieImageView.image = UIImage(data: data)
+                if let data = data {
+                    self?.movieImageView.image = UIImage(data: data)
+                }
             }
-        }.resume()
+        }
     }
     
     // MARK: - Configure
     func configure(with movie: Movie) {
-        self.movie = movie
+        viewModel.configure(with: movie)
     }
 }
 

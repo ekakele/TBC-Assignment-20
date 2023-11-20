@@ -213,7 +213,7 @@ extension MainViewController: HomeViewModelDelegate {
     }
     
     func navigateToMovieDetails(with movie: Movie) {
-        let movieDetailsPage = MovieDetailViewController()
+        let movieDetailsPage = DetailsViewController()
         movieDetailsPage.configure(with: movie)
         navigationController?.pushViewController(movieDetailsPage, animated: true)
     }

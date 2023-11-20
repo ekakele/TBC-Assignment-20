@@ -40,7 +40,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "5BD39B4D-8460-4752-97BB-321D027FAB54"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Assignment-15/NetworkManager/NetworkManager.swift"
@@ -110,6 +110,21 @@
                   startingLineNumber = "42"
                   endingLineNumber = "42"
                   offsetFromSymbolStart = "1556">
+               </Location>
+               <Location
+                  uuid = "5BD39B4D-8460-4752-97BB-321D027FAB54 - a639799004dc53d8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Assignment_15.NetworkManager.fetchMovies(searchKeyword: Swift.String, completion: (Swift.Result&lt;Swift.Array&lt;Assignment_15.Movie&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Assignment-15"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ekakelenjeridze/Desktop/TBC%20IT%20Academy%20-%20iOS%20Development/TBC%20Assignments/Module%202/Assignment-20/Assignment-15/NetworkManager/NetworkManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "916">
                </Location>
             </Locations>
          </BreakpointContent>

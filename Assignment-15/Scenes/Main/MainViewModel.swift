@@ -14,13 +14,16 @@ protocol HomeViewModelDelegate: AnyObject {
 }
 
 final class MainViewModel {
+    // MARK: - Properties
     private var movies: [Movie]?
     weak var delegate: HomeViewModelDelegate?
     
+    // MARK: - ViewLifeCycle
     func viewDidLoad() {
         fetchMovies(keyword: "Christmas")
     }
     
+    // MARK: - Methods
     func didSelectMovie(at indexPath: IndexPath) {
         if let movie = movies?[indexPath.row] {
             delegate?.navigateToMovieDetails(with: movie)
@@ -31,6 +34,7 @@ final class MainViewModel {
         fetchMovies(keyword: keyword)
     }
     
+    // MARK: - Private Methods
     private func fetchMovies(keyword: String) {
         NetworkManager.shared.fetchMovies(searchKeyword: keyword) { [weak self] result in
             switch result {
