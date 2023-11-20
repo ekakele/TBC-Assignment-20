@@ -10,6 +10,7 @@ import Foundation
 protocol HomeViewModelDelegate: AnyObject {
     func moviesFetched(_ movies: [Movie])
     func showError(_ error: Error)
+    func navigateToMovieDetails(with movie: Movie)
 }
 
 final class MainViewModel {
@@ -18,6 +19,12 @@ final class MainViewModel {
     
     func viewDidLoad() {
         fetchMovies(keyword: "Christmas")
+    }
+    
+    func didSelectMovie(at indexPath: IndexPath) {
+        if let movie = movies?[indexPath.row] {
+            delegate?.navigateToMovieDetails(with: movie)
+        }
     }
     
     private func fetchMovies(keyword: String) {

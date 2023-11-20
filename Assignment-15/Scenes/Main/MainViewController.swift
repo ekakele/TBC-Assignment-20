@@ -165,9 +165,7 @@ extension MainViewController: UICollectionViewDataSource {
 // MARK: - CollectionView Delegate
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //        let movieDetailsPage = MovieDetailViewController()
-        //        movieDetailsPage.configure(with: movies[indexPath.row])
-        //        navigationController?.pushViewController(movieDetailsPage, animated: true)
+        viewModel.didSelectMovie(at: indexPath)
     }
 }
 
@@ -213,4 +211,11 @@ extension MainViewController: HomeViewModelDelegate {
     func showError(_ error: Error) {
         print(error.localizedDescription)
     }
+    
+    func navigateToMovieDetails(with movie: Movie) {
+        let movieDetailsPage = MovieDetailViewController()
+        movieDetailsPage.configure(with: movie)
+        navigationController?.pushViewController(movieDetailsPage, animated: true)
+    }
+    
 }
