@@ -27,6 +27,10 @@ final class MainViewModel {
         }
     }
     
+    func searchMovies(with keyword: String) {
+        fetchMovies(keyword: keyword)
+    }
+    
     private func fetchMovies(keyword: String) {
         NetworkManager.shared.fetchMovies(searchKeyword: keyword) { [weak self] result in
             switch result {

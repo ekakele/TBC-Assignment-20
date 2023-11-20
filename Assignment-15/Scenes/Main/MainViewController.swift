@@ -195,7 +195,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 extension MainViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
-        //        fetchMovies(keyword: text)
+        viewModel.searchMovies(with: text)
     }
 }
 
