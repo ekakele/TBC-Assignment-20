@@ -35,7 +35,7 @@ final class DetailsViewController: UIViewController {
         return label
     }()
     
-    private let IDLabel: UILabel = {
+    private let IMDBRatingLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 20, weight: .bold)
@@ -69,12 +69,25 @@ final class DetailsViewController: UIViewController {
         return button
     }()
     
-    private var viewModel = DetailsViewModel()
+    private var viewModel: DetailsViewModel
+    
+    // MARK: - Init
+    init(imdbID: String) {
+        viewModel = DefaultDetailsViewModel(imdbID: imdbID)
+        super.init(nibName: nil, bundle: nil)
+        
+        viewModel.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - ViewLifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        viewModel.viewDidLoad()
     }
     
     // MARK: - Private Methods
@@ -86,7 +99,6 @@ final class DetailsViewController: UIViewController {
         setupDescriptionLabel()
         setupBottomSectionStackView()
         setupSelectSessionButton()
-        setupMovieWithInformation()
     }
     
     private func setupBackground() {
@@ -118,7 +130,7 @@ final class DetailsViewController: UIViewController {
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
-        stackView.addArrangedSubview(IDLabel)
+        stackView.addArrangedSubview(IMDBRatingLabel)
         stackView.addArrangedSubview(IMDBLabel)
         
         mainStackView.addArrangedSubview(stackView)
@@ -173,31 +185,34 @@ final class DetailsViewController: UIViewController {
     private func setupSelectSessionButton() {
         bottomSectionStackView.addArrangedSubview(selectSessionButton)
     }
-    
-    private func setupMovieWithInformation() {
-        navigationItem.title = viewModel.titleLabel
-        IDLabel.text = viewModel.ratingLabel
-        loadMovieImage()
-    }
-    
-    private func loadMovieImage() {
-        guard let url = viewModel.posterURL else { return }
-        
-        viewModel.loadImageData(from: url) { [weak self] data, error in
-            DispatchQueue.main.async {
-                if let data = data {
-                    self?.movieImageView.image = UIImage(data: data)
-                }
-            }
+}
+
+// MARK: - DetailsViewModelDelegate
+extension DetailsViewController: DetailsViewModelDelegate {
+    func movieDetailsFetched(_ movie: MovieDetails) {
+        Task {
+            navigationItem.title = movie.title
+            IMDBRatingLabel.text = movie.imdbRating
+            descriptionLabel.text = movie.plot
+            createInfoStackView("Genre:", detail: movie.genre)
+            createInfoStackView("Release Year:", detail: movie.releaseYear)
+            createInfoStackView("Runtime:", detail: movie.runtime)
+            createInfoStackView("Director:", detail: movie.director)
+            createInfoStackView("Actors:", detail: movie.actors)
+            createInfoStackView("Language:", detail: movie.language)
+            createInfoStackView("Country:", detail: movie.country)
         }
     }
     
-    // MARK: - Configure
-    func configure(with movie: Movie) {
-        viewModel.configure(with: movie)
+    func showError(_ error: Error) {
+        print(error.localizedDescription)
     }
+    
+    func movieDetailsImageFetched(_ image: UIImage) {
+        Task {
+            movieImageView.image = image
+        }
+    }
+    
 }
-
-
-
 

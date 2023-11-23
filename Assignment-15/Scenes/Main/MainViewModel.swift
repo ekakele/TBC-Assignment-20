@@ -10,7 +10,7 @@ import Foundation
 protocol HomeViewModelDelegate: AnyObject {
     func moviesFetched(_ movies: [Movie])
     func showError(_ error: Error)
-    func navigateToMovieDetails(with movie: Movie)
+    func navigateToMovieDetails(with imdbID: String)
 }
 
 final class MainViewModel {
@@ -25,8 +25,8 @@ final class MainViewModel {
     
     // MARK: - Methods
     func didSelectMovie(at indexPath: IndexPath) {
-        if let movie = movies?[indexPath.row] {
-            delegate?.navigateToMovieDetails(with: movie)
+        if let imdbID = movies?[indexPath.row].imdbID {
+            delegate?.navigateToMovieDetails(with: imdbID)
         }
     }
     

@@ -17,11 +17,11 @@ struct MoviesResponse: Decodable {
 }
 
 struct Movie: Decodable {
-    let title: String?
-    let year: String?
-    let imdbID: String?
-    let type: String?
-    let poster: String?
+    let title: String
+    let year: String
+    let imdbID: String
+    let type: String
+    let poster: String
     
     private enum CodingKeys: String, CodingKey  {
         case imdbID

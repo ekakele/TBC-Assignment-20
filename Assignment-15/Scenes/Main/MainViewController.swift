@@ -60,7 +60,7 @@ final class MainViewController: UIViewController {
     
     private let searchController = UISearchController()
     private var movies = [Movie]()
-    private var viewModel = MainViewModel()
+    private let viewModel = MainViewModel()
     
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
@@ -212,10 +212,8 @@ extension MainViewController: HomeViewModelDelegate {
         print(error.localizedDescription)
     }
     
-    func navigateToMovieDetails(with movie: Movie) {
-        let movieDetailsPage = DetailsViewController()
-        movieDetailsPage.configure(with: movie)
+    func navigateToMovieDetails(with imdbID: String) {
+        let movieDetailsPage = DetailsViewController(imdbID: imdbID)
         navigationController?.pushViewController(movieDetailsPage, animated: true)
     }
-    
 }

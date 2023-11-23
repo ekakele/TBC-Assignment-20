@@ -5,40 +5,51 @@
 //  Created by Eka Kelenjeridze on 20.11.23.
 //
 
-import Foundation
+import UIKit
 
-final class DetailsViewModel {
+
+protocol DetailsViewModelDelegate: AnyObject {
+    func movieDetailsFetched(_ movie: MovieDetails)
+    func showError(_ error: Error)
+    func movieDetailsImageFetched(_ image: UIImage)
+}
+
+protocol DetailsViewModel {
+    var delegate: DetailsViewModelDelegate? { get set }
+    func viewDidLoad()
+}
+
+final class DefaultDetailsViewModel: DetailsViewModel {
     // MARK: - Properties
-    private var movie: Movie?
+    private var imdbID: String
+    weak var delegate: DetailsViewModelDelegate?
     
-    var ratingLabel: String {
-        return "\(self.movie?.imdbID ?? "N/A")"
+    // MARK: - Init
+    init(imdbID: String) {
+        self.imdbID = imdbID
     }
     
-    var titleLabel: String {
-        return "\(self.movie?.title ?? "N/A")"
+    // MARK: - ViewLifeCycle
+    func viewDidLoad() {
+        fetchMovieDetails()
     }
     
-    var posterURL: URL? {
-        guard let posterString = movie?.poster, let url = URL(string: posterString) else {
-            return nil
-        }
-        return url
-    }
-    
-    // MARK: - Methods
-    func loadImageData(from url: URL, completion: @escaping (Data?, Error?) -> Void) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(nil, error)
-                return
+    // MARK: - Private Methods
+    private func fetchMovieDetails() {
+        Task {
+            do {
+                let movieDetails = try await NetworkManager.shared.fetchMovieDetails(for: imdbID)
+                delegate?.movieDetailsFetched(movieDetails)
+                downloadImage(from: movieDetails.poster)
+            } catch let error {
+                delegate?.showError(error)
             }
-            completion(data, nil)
-        }.resume()
+        }
     }
     
-    // MARK: - Configure
-    func configure(with movie: Movie) {
-        self.movie = movie
+    private func downloadImage(from url: String) {
+        NetworkManager.shared.downloadImage(from: url) { [weak self] image in
+            self?.delegate?.movieDetailsImageFetched(image ?? UIImage())
+        }
     }
 }

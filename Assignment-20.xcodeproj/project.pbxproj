@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B54268F02B0F668F003A0FCB /* MovieDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54268EF2B0F668F003A0FCB /* MovieDetails.swift */; };
 		B54E7EEB2AFEDE3E00EBEE76 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E7EEA2AFEDE3E00EBEE76 /* NetworkManager.swift */; };
 		B54E7EED2AFEDE6400EBEE76 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E7EEC2AFEDE6400EBEE76 /* Movie.swift */; };
 		B5A6A27E2B0BB22900727C6B /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6A27D2B0BB22900727C6B /* DetailsViewModel.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B54268EF2B0F668F003A0FCB /* MovieDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetails.swift; sourceTree = "<group>"; };
 		B54E7EEA2AFEDE3E00EBEE76 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		B54E7EEC2AFEDE6400EBEE76 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		B5A6A27D2B0BB22900727C6B /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				B54E7EEC2AFEDE6400EBEE76 /* Movie.swift */,
+				B54268EF2B0F668F003A0FCB /* MovieDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				B5B1C84A2AF4F6F700F8A988 /* DetailsViewController.swift in Sources */,
 				B5B1C8392AF4F58400F8A988 /* MainViewController.swift in Sources */,
 				B54E7EEB2AFEDE3E00EBEE76 /* NetworkManager.swift in Sources */,
+				B54268F02B0F668F003A0FCB /* MovieDetails.swift in Sources */,
 				B5F124DB2B0B3AB900EEA0F3 /* MainViewModel.swift in Sources */,
 				B5B1C84D2AF5170D00F8A988 /* MovieCollectionViewCell.swift in Sources */,
 				B54E7EED2AFEDE6400EBEE76 /* Movie.swift in Sources */,

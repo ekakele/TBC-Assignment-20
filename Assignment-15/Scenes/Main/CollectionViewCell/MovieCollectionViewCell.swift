@@ -94,9 +94,7 @@ final class MovieCollectionViewCell: UICollectionViewCell {
         titleLabel.text = movie.title
         yearLabel.text = movie.year
         typeLabel.text = movie.type
-        if let url = URL(string: movie.poster!) {
-            loadImage(from: url)
-        }
+        setImage(from: movie.poster)
     }
     
     // MARK: - Private Methods
@@ -158,14 +156,11 @@ final class MovieCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private func loadImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self, let data = data, error == nil else {
-                return
-            }
+    private func setImage(from url: String) {
+        NetworkManager.shared.downloadImage(from: url) { [weak self] image in
             DispatchQueue.main.async {
-                self.movieImageView.image = UIImage(data: data)
+                self?.movieImageView.image = image
             }
-        }.resume()
+        }
     }
 }
